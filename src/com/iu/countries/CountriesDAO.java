@@ -8,6 +8,25 @@ import java.util.ArrayList;
 import com.iu.util.DBConnector;
 
 public class CountriesDAO {
+	//setCountry
+	public int setCountry(CountriesDTO country) throws Exception{
+		Connection con = DBConnector.getConnection();
+		
+		String sql = "INSERT INTO COUNTRIES VALUES(?,?,?)";
+		
+		PreparedStatement st = con.prepareStatement(sql);
+		
+		st.setString(1,country.getCountry_id());
+		st.setString(2, country.getCountry_name());
+		st.setInt(3, country.getRegion_id());
+		int result = st.executeUpdate();
+		
+		DBConnector.disConnect(st, con);
+		
+		return result;
+	}
+	
+	
 	
 	//getDetail : country_id
 	public CountriesDTO getDetail(String country_id) throws Exception {
@@ -42,9 +61,13 @@ public class CountriesDAO {
 		
 		Connection con = DBConnector.getConnection();
 		
+//		String sql = "SELECT * FROM COUNTRIES WHERE COUNTRY_ID LIKE ?";
 		String sql = "SELECT * FROM COUNTRIES";
 		
 		PreparedStatement st = con.prepareStatement(sql);
+		
+		// ? 있으면 값 세팅
+		//st.setString(1, "%"+search+"%");
 		
 		ResultSet rs = st.executeQuery();
 		
